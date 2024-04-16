@@ -1,5 +1,5 @@
 // Put some initial data in the database
-
+require('dotenv').config()
 const {client} = require('./index');
 
 // Create a comics table

@@ -2,7 +2,7 @@
 
 const { Client } = require('pg');
 
-const client = new Client(`postgres://localhost:5432/comic-store`);
+const client = new Client(process.env.DATABASE_URL);
 
 module.exports = {
   client
