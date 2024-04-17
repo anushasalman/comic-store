@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require('body-parser');
 const { client } = require("./db");
-const apiRouter = require("./api");
+const apiRouter = require('./api');
 
 const app = express();
 const PORT = 8080;
@@ -12,12 +12,13 @@ const PORT = 8080;
 
 // connecting to database
 client.connect();
+
 app.use(morgan('dev'));
 
 // Parses body if it is url encoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }))
 // Parse body if it is in json form
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 app.use((req, res, next) => {
   // log out everything on body of request to make sure it's working

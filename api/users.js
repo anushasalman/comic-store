@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const usersRouter = express.Router();
-const {client} = require('../db');
+const { client } = require('../db');
 
 usersRouter.get("/", (req, res) => {
   res.send("This is the root for /api/users");
@@ -22,13 +22,26 @@ usersRouter.post("/register", async (req, res) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
   //console.log("HASHED PASSWORD:", hashedPassword);
-
+try {
   // I need to create user with username and hashed password
+const {
+  rows: [ user ],
+} = await client.query(
+  `
+INSERT INTO users(username, password)
+VALUES ($1, $2)
+RETURNING *;
+`, 
+[username, hashedPassword]
+);
 
-res.send("Called /register");
-
-})
-
+// console.log(user);
+res.send({ id: user.id });
+} catch (err) {
+  console.log("Error creating user", err);
+  res.sendStatus(500);
+}
+});
 
 
 module.exports = usersRouter;
