@@ -6,6 +6,46 @@ const { client } = require('../db');
 usersRouter.get("/", (req, res) => {
   res.send("This is the root for /api/users");
 })
+// Log in a user
+usersRouter.post('/login', async (req, res) => {
+  const username = req.body.username;
+  const plainTextPassword = req.body.password;
+
+// Does this user exist
+// Get first position in that array, username in this case
+try {
+const { rows: [user] } = await client.query(
+  `
+SELECT * FROM users
+WHERE username = $1
+`, 
+[username] 
+);
+// console.log(user);
+// if there is no user, send back error
+if(!user){
+  res.sendStatus(401);
+}
+else{
+  // Check password against hash
+const passwordIsAMatch = await bcrypt.compare(plainTextPassword, user.password);
+if(passwordIsAMatch){
+// This is a valid login
+res.send("This is a valid login");
+
+}else{
+  res.sendStatus(401);
+}
+}
+} catch(err) {
+  console.log(err);
+res.sendStatus(500);
+}
+  //res.send("/login")
+});
+
+
+
 
 // Create a user with a hashed password
 usersRouter.post("/register", async (req, res) => {
