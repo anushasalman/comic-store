@@ -28,16 +28,17 @@ const createTables = async () => {
     console.log("STARTING TO CREATE TABLES...");
 
     await client.query(`
-    CREATE TABLE comics (
-      id SERIAL PRIMARY KEY,
-      issueNumber INTEGER NOT NULL,
-      title VARCHAR(255) NOT NULL
-    );
-  
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
       username VARCHAR(255) UNIQUE NOT NULL,
       password VARCHAR(255) NOT NULL
+    );
+    
+    CREATE TABLE comics (
+      id SERIAL PRIMARY KEY,
+      issueNumber INTEGER NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      addedBy INTEGER REFERENCES users(id)
     );
     `);
 
