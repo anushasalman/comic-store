@@ -70,6 +70,24 @@ const getAllComics = async () => {
   }
 };
 
+const deleteComic = async (comicId) => {
+  try{
+    const {rows: [comic]} = await client.query(
+      `
+    DELETE FROM comics 
+    WHERE id=${comicId}
+    RETURNING *;
+    `
+  )
+  return comic;
+  } catch(err) {
+    throw err;
+  }
+}
+
+
+
+
 const getAllUsersComics = async (userId) => {
   try{
     const {rows} = await client.query(`
@@ -92,5 +110,6 @@ module.exports = {
   createComic,
   getAllComics,
   getUserById,
-  getAllUsersComics
+  getAllUsersComics,
+  deleteComic
 }
