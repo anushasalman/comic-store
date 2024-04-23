@@ -6,7 +6,7 @@ const { client } = require("./db");
 const apiRouter = require('./api');
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // console.log(process.env.DATABASE_URL);
 
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 // Everything that comes in with /api use the api router which is in index.js file
 app.use('/api', apiRouter);
 
-
+// Send HTML
 app.get("/", (req, res) => {
   res.send(`<h1>Comic Store</h1>`);
 });
